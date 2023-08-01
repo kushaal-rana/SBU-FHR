@@ -2,10 +2,12 @@ import "./App.css";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import TableComponent from "./components/TableComponent";
+import { FaSearch } from "react-icons/fa";
 
 function App() {
   const [data, setData] = useState([{}]);
   const [inputValue, setInputValue] = useState("");
+  const [results, setResults] = useState([]);
 
   const checkBackend = async () => {
     try {
@@ -16,36 +18,73 @@ function App() {
     }
   };
 
-  useEffect(() => {
-    // checkBackend();
-    fetch("http://localhost:5000/members")
-      .then((res) => res.json())
-      .then((data) => {
-        setData(data);
+  const fetchData = (value) => {
+    fetch("https://jsonplaceholder.typicode.com/users")
+      .then((resp) => resp.json())
+      .then((json) => {
+        const results = json.filter((user) => {
+          return (
+            value &&
+            user &&
+            user.name &&
+            user.name.toLowerCase().includes(value)
+          );
+        });
+        console.log(results);
+        setResults(results);
       });
-  }, []);
+  };
+
+  // useEffect(() => {
+  // checkBackend();
+  //   fetch("http://localhost:5000/members")
+  //     .then((res) => res.json())
+  //     .then((data) => {
+  //       setData(data);
+  //     });
+  // }, []);
 
   const handleChange = (event) => {
-    setInputValue(event.target.value);
+    setInputValue(event?.target?.value);
+    fetchData(event?.target?.value);
   };
 
   const clearInput = (event) => {
     setInputValue("");
+    fetchData(event?.target?.value);
   };
+
   return (
-    <div className="App">
-      <div className="input">
+    <>
+      <div className="body">
         <h1> SBU-FHR Database </h1>
         <br />
-        <input
-          className="large-input"
-          type="text"
-          placeholder=" Use this search bar to query the SBU FHR Database using natural language text"
-          value={inputValue}
-          onChange={(event) => {
-            handleChange(event);
-          }}
-        />
+        <div className="search-bar-container">
+          <div className="input-wrapper">
+            <FaSearch id="search-icon" />
+            <input
+              type="text"
+              placeholder="Use this search bar to query the SBU FHR Database using natural language text"
+              value={inputValue}
+              onChange={(event) => handleChange(event)}
+            />
+          </div>
+          <div className="results-list">
+            {console.log(results, "RESSS")}
+            {results.length > 0 &&
+              results.map((result, index) => {
+                return (
+                  <div
+                    className="search-result"
+                    onClick={(e) => alert(`You Clicked on ${result.name}`)}
+                    key={index}
+                  >
+                    {result.name}
+                  </div>
+                );
+              })}
+          </div>
+        </div>
         <div className="btn">
           <button className="my-button" onClick={clearInput}>
             Clear
@@ -53,13 +92,14 @@ function App() {
           <button className="my-button">Submit</button>
         </div>
       </div>
-      <TableComponent data={data} />
+      {/* {console.log(data, data.length, "WTDFFFF")} */}
+      {data.length > 1 && <TableComponent data={data} />}
       {/* <div>
         {data.members.map((member) => (
           <p>member</p>
-        ))}
-      </div> */}
-    </div>
+          ))}
+        </div> */}
+    </>
   );
 }
 

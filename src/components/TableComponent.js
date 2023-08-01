@@ -17,7 +17,6 @@ const TableComponent = (props) => {
     ],
   };
   const data = props.data;
-  console.log(data, "DATAAA");
 
   return (
     <div className="table-container">
