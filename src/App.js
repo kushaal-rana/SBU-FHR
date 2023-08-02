@@ -1,20 +1,40 @@
 import "./App.css";
-import { useState, useEffect } from "react";
-import axios from "axios";
+import { useState, useRef, useEffect } from "react";
 import TableComponent from "./components/TableComponent";
 import { FaSearch } from "react-icons/fa";
 
 function App() {
-  const [data, setData] = useState([{}]);
+  const [apiData, setApiData] = useState([]);
   const [inputValue, setInputValue] = useState("");
   const [results, setResults] = useState([]);
+  const [textareaValue, setTextareaValue] = useState({});
+  const textareaRef = useRef(null);
+  const [sqlQuery, setSqlQuery] = useState(null);
+  const [flag, setFlag] = useState(false);
 
-  const checkBackend = async () => {
-    try {
-      const response = await axios.post("http://localhost:5000/members");
-      setData(response.data);
-    } catch (error) {
-      console.error("Error searching items", error);
+  const handleSqlChange = (event) => {
+    setFlag(true);
+    setSqlQuery(event.target.value);
+  };
+
+  const handleSubmit = async () => {
+    const formData = new FormData();
+    if (flag == false) {
+      formData.append("nlq", inputValue);
+    } else {
+      formData.append("nlq", sqlQuery);
+    }
+
+    const response = await fetch("http://172.31.158.228/generate/", {
+      method: "POST",
+      body: formData,
+    });
+    debugger;
+
+    if (response.status != 500) {
+      const data = await response.json();
+      setApiData(data);
+      setSqlQuery(data.SQL);
     }
   };
 
@@ -30,28 +50,22 @@ function App() {
             user.name.toLowerCase().includes(value)
           );
         });
-        console.log(results);
         setResults(results);
       });
   };
 
-  // useEffect(() => {
-  // checkBackend();
-  //   fetch("http://localhost:5000/members")
-  //     .then((res) => res.json())
-  //     .then((data) => {
-  //       setData(data);
-  //     });
-  // }, []);
-
   const handleChange = (event) => {
     setInputValue(event?.target?.value);
-    fetchData(event?.target?.value);
+    // fetchData(event?.target?.value);
+    if (event.target.value == "") {
+      setApiData([]);
+    }
   };
 
   const clearInput = (event) => {
     setInputValue("");
     fetchData(event?.target?.value);
+    setApiData([]);
   };
 
   return (
@@ -64,13 +78,27 @@ function App() {
             <FaSearch id="search-icon" />
             <input
               type="text"
-              placeholder="Use this search bar to query the SBU FHR Database using natural language text"
+              placeholder="Use this search bar to query the SBU-FHR Database using natural language text. Try: How many mothers are there in database? "
               value={inputValue}
               onChange={(event) => handleChange(event)}
             />
           </div>
+          {console.log(apiData, "Whatatt")}
+          {apiData?.Status == "Failed" && (
+            <div>
+              <div className="query-error">
+                No Results Generated, Please edit the SQL query
+              </div>
+              <textarea
+                ref={textareaRef}
+                className="sql-query"
+                value={sqlQuery}
+                onChange={handleSqlChange}
+              />
+            </div>
+          )}
+
           <div className="results-list">
-            {console.log(results, "RESSS")}
             {results.length > 0 &&
               results.map((result, index) => {
                 return (
@@ -89,16 +117,18 @@ function App() {
           <button className="my-button" onClick={clearInput}>
             Clear
           </button>
-          <button className="my-button">Submit</button>
+          <button className="my-button" onClick={handleSubmit}>
+            Submit
+          </button>
         </div>
       </div>
-      {/* {console.log(data, data.length, "WTDFFFF")} */}
-      {data.length > 1 && <TableComponent data={data} />}
+      {console.log(apiData.Rows, apiData?.Rows?.length)}
+      {apiData?.Rows?.length > 1 && <TableComponent data={apiData} />}
       {/* <div>
-        {data.members.map((member) => (
-          <p>member</p>
-          ))}
-        </div> */}
+        {apiData.Columns.map((member) => (
+          <p>{member}</p>
+        ))}
+      </div> */}
     </>
   );
 }
