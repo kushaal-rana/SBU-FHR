@@ -1,69 +1,51 @@
-import React, { useState } from "react";
+import { MaterialReactTable } from "material-react-table";
+import { CsvBuilder } from "filefy";
 
 const TableComponent = (props) => {
-  const itemsPerPage = 5; // Number of items to display per page
-  const totalPages = Math.ceil(props.data.Rows.length / itemsPerPage);
-  const [currentPage, setCurrentPage] = useState(1);
+  const columnsData = props?.data?.Columns?.map((column, index) => ({
+    accessorKey: column,
+    header: column,
+    size: 250,
+    Cell: ({ renderedCellValue }) => <strong>{renderedCellValue}</strong>,
+  }));
 
-  const indexOfLastItem = currentPage * itemsPerPage;
-  const indexOfFirstItem = indexOfLastItem - itemsPerPage;
-  const currentItems = props.data.Rows.slice(indexOfFirstItem, indexOfLastItem);
-
-  const handlePaginationClick = (pageNumber) => {
-    setCurrentPage(pageNumber);
+  const DownloadAllRows = () => {
+    new CsvBuilder("fhrData.csv")
+      .setColumns(columns.map((col) => col.header))
+      .addRows(
+        data.map((rowData) => columns.map((col) => rowData[col.accessorKey]))
+      )
+      .exportFile();
   };
 
-  const renderPaginationButtons = () => {
-    const buttons = [];
-    const maxButtonsToShow = 5;
-    const startButton =
-      currentPage <= Math.ceil(maxButtonsToShow / 2)
-        ? 1
-        : currentPage >= totalPages - Math.floor(maxButtonsToShow / 2)
-        ? totalPages - maxButtonsToShow + 1
-        : currentPage - Math.floor(maxButtonsToShow / 2);
+  const rowsData = props?.data?.Rows?.map((row) => {
+    return props?.data?.Columns.reduce((acc, column, index) => {
+      acc[column] = row[index];
+      return acc;
+    }, {});
+  });
 
-    for (let i = startButton; i < startButton + maxButtonsToShow; i++) {
-      if (i <= totalPages) {
-        buttons.push(
-          <button
-            key={i}
-            onClick={() => handlePaginationClick(i)}
-            className={currentPage === i ? "active" : ""}
-          >
-            {i}
-          </button>
-        );
-      }
-    }
-    return buttons;
-  };
+  const columns = columnsData;
+  const data = rowsData;
+  console.log(columns, "ColumnssX");
+  console.log(data, "Rows");
 
   return (
-    <div className="table-container">
-      <h2>Table </h2>
-      <div className="table-scrollable">
-        <table className="table">
-          <thead>
-            <tr>
-              {props?.data?.Columns?.map((colName, index) => (
-                <th key={index}>{colName}</th>
-              ))}
-            </tr>
-          </thead>
-          <tbody>
-            {currentItems?.map((items, index) => (
-              <tr key={index}>
-                {items.map((item, index) => (
-                  <td key={index}>{item}</td>
-                ))}
-              </tr>
-            ))}
-          </tbody>
-        </table>
+    <>
+      <div className="table">
+        <MaterialReactTable
+          columns={columns}
+          data={data}
+          enablePinning
+          enableRowNumbers
+          enableRowVirtualization
+          muiTableContainerProps={{ sx: { maxHeight: "600px" } }}
+        />
       </div>
-      <div className="pagination">{renderPaginationButtons()}</div>
-    </div>
+      <button className="download-btn" onClick={DownloadAllRows}>
+        Download as CSV
+      </button>
+    </>
   );
 };
 

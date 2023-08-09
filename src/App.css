@@ -1,78 +1,39 @@
 /* TableComponent.css */
 
-h1{
-  margin-top: 30px;
+
+nav {
+  background-color: #007BFF;
 }
-.body{
+
+nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
   display: flex;
-  flex-direction: column;
-  align-items: center;
 }
 
-.search-bar-container {
-  padding-top: 1vh;
-  width: 40%;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  min-width: 200px;
+nav li {
+  margin-right: 12px;
+  margin-top: 20px;
+  height: 40px;
 }
 
-.input-wrapper {
-  width: 150%;
-  height: 4rem;
-  border: none;
-  border-radius: 10px;
-  padding: 0 30px;
-  box-shadow: 0px 0px 8px #ddd;
-  background-color: white;
-  display: flex;
-  align-items: center;
-}
-.results-list {
-  width: 150%;
-  background-color: white;
-  display: flex;
-  flex-direction: column;
-  box-shadow: 0px 0px 8px #ddd;
-  border-radius: 10px;
-  margin-top: 1rem;
-  max-height: 300px;
-  overflow-y: auto;
+nav a {
+  color: #fff;
+  text-decoration: none;
+  padding: 10px;
 }
 
-.search-result {
-  padding: 10px 20px;
+nav a:hover {
+  background-color: #0056b3;
 }
 
-.search-result:hover {
-  background-color: #efefef;
-}
 
-input {
-  background-color: transparent;
-  border: none;
-  height: 100%;
-  font-size: 1.15rem;
-  width: 100%;
-  margin-left: 5px;
-}
 
-input:focus{
-  outline: none;
-}
 
-#search-icon {
-  color: royalblue;
-}
-
-.large-input {
-  width: 750px;
-  height: 60px;
-  font-size: 17px;
-}
 .btn{
-  margin-top: 10px;
+  margin: -20px;
+  margin-left: 45%;
 }
 .my-button {
   font-family: Arial, Helvetica, sans-serif;
@@ -84,71 +45,17 @@ input:focus{
   background: #1063ea;
   color: white;
   border: none;
-}
-
-
-.table-container {
-  margin: 20px;
-}
-
-.table-scrollable {
-  max-height: 500px; /* Set the desired height for the scrollable area */
-  overflow: auto; /* Add scrollbars when content exceeds the height */
-}
-
-.table-scrollable thead th {
-  position: sticky;
-  top: 0;
-  background-color: #f1f1f1; /* Optional: Add a background color for the sticky header */
-}
-
-.table {
-  border: 1px solid #ccc;
-  width: 100%;
-  border-collapse: collapse;
-}
-
-.table thead tr {
-  background: #f2f2f2;
-}
-
-.table th,
-.table td {
-  padding: 8px;
-  border: 1px solid #ccc;
-}
-
-.pagination {
-  display: flex;
-  justify-content: center;
-  margin-top: 20px;
-}
-
-.pagination button {
-  border: none;
-  padding: 8px 16px;
-  margin: 5px;
   cursor: pointer;
-  color: white;
-  background-color: #1063ea;
-  border-radius: 15px;
-  transition: background-color 0.3s ease;
 }
-
-.pagination button.active {
-  background-color: #649ae0;
-}
-
-
 
 .sql-query {
   width: 100%;
-  height: 200px; /* Adjust the height as needed */
+  height: 200px;
   padding: 10px;
   font-size: 16px;
   border: 1px solid #ccc;
   border-radius: 5px;
-  resize: vertical; /* Allow vertical resizing */
+  resize: vertical;
 }
 
 
@@ -161,4 +68,27 @@ input:focus{
   border-radius: 4px;
   margin-bottom: 10px;
   font-size: 20px;
+}
+
+.loader {
+  margin: auto;
+  border: 20px solid #EAF0F6;
+  border-radius: 50%;
+  border-top: 20px solid #000000;
+  width: 150px;
+  height: 150px;
+  animation: spinner 2s linear infinite;
+  margin-top: 45px;
+
+}
+
+@keyframes spinner {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+
+
+.loader img {
+  width: 100px; /* Adjust the size of the spinner image */
+  height: 100px;
 }

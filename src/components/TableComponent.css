@@ -1,0 +1,27 @@
+.table{
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+.download-btn{
+    background-color: #1063ea;
+    color: white;
+    font-family: Arial, Helvetica, sans-serif;
+    font-weight: bold;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: background-color 0.3s ease-in-out;
+    font-size: 18px;
+    padding: 12px 14px;
+    margin: 20px;
+    margin-left: 60rem;
+  }
+
+  .download-btn:hover {
+    background-color: #1086e6;
+  }
+  
+  .download-btn:focus {
+    outline: none;
+    box-shadow: 0 0 4px rgba(0, 0, 0, 0.2);
+  }
