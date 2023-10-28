@@ -56,15 +56,16 @@ h1{
     color: royalblue;
   }
 
-input {
+.input-field {
     background-color: transparent;
     border: none;
     height: 100%;
     font-size: 1.15rem;
     width: 100%;        
-    margin-left: 5px;
+    margin-left: 2px;
+    margin-top: 15px;
 }
 
-input:focus{
+.input-field:focus{
     outline: none;
 }

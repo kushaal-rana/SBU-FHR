@@ -1,9 +1,9 @@
 import React from "react";
 import SearchQuery from "./components/SearchQuery";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import Spinner from "./components/Spinner";
 import Mother from "./components/search";
 import Child from "./components/searchChild";
+import { Link } from "react-router-dom";
 
 const App = () => {
   return (
@@ -12,14 +12,14 @@ const App = () => {
         <nav>
           <ul>
             <li>
-              <a href="/">Query FHR</a>
+              <Link to="/">Query FHR</Link>
             </li>
             <li></li>
             <li>
-              <a href="/searchMotherNotes">Mother Notes</a>
+              <Link to="/searchMotherNotes">Mother Notes</Link>
             </li>
             <li>
-              <a href="/searchChildNotes">Child Notes</a>
+              <Link to="/searchChildNotes">Child Notes</Link>
             </li>
           </ul>
         </nav>
