@@ -14,17 +14,18 @@ const Search = () => {
 
   const fetchData = useCallback(async () => {
     try {
-      const response = await fetch("http://172.31.158.228/distinct-values/", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({ motherId, encounterId }),
-      });
+      debugger;
+      // const response = await fetch("http://172.31.158.228/distinct-values/", {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ motherId, encounterId }),
+      // });
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Network response was not ok");
+      // }
 
       const res = await fetch("https://jsonplaceholder.typicode.com/todos/1")
         .then((response) => response.json())
@@ -32,10 +33,10 @@ const Search = () => {
       debugger;
       console.log("this is https", res);
 
-      const data = await response.json();
+      // const data = await response.json();
 
-      setOptions(data.distinct_values);
-      setNoteTitle(data.distinct_values[0]);
+      // setOptions(data.distinct_values);
+      // setNoteTitle(data.distinct_values[0]);
     } catch (error) {
       console.error("Error posting data:", error);
     }
