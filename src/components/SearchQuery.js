@@ -70,6 +70,7 @@ export default function SearchQuery() {
     fetchData(event?.target?.value);
     setApiData([]);
   };
+
   return (
     <>
       <div className="body">
@@ -125,13 +126,13 @@ export default function SearchQuery() {
         </div>
       </div>
       {loading && <Spinner />}
-      {apiData?.Rows?.length >= 1 && <TableComponent data={apiData} />}
-      {/* {<TableComponent data={apiData} />} */}
+      {apiData?.Rows >= 1 && <TableComponent data={apiData} />}
+      {/* {<TableComponent dataa} />}={apiDat */}
       {/* <div>
-            {apiData.Columns.map((member) => (
-              <p>{member}</p>
-            ))}
-          </div> */}
+        {apiData?.Columns?.map((member) => (
+          <p>{member}</p>
+        ))}
+      </div> */}
     </>
   );
 }
